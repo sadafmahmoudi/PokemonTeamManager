@@ -1,0 +1,87 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #05183e;
+    color: #fffb27;
+    text-align: center;
+    padding: 10px;
+}
+
+#app {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #fffb27;
+}
+/* Add to styles.css */
+/* Style for team and reserves */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #f2f2f2;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+h2 {
+    color: #05183e;
+}
+/* Add to styles.css */
+
+
+ul li {
+    display: flex;
+    align-items: center;
+    background-color: #62a4ff;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+ul li img {
+    margin-right: 10px;
+    width: 50px; /* Adjust the size as needed */
+    height: 50px; /* Adjust the size as needed */
+}
+
+span {
+    font-size: 18px;
+}
+#search-results li {
+    display: flex;
+    align-items: center;
+    background-color: #f4f4f4;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+#list-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+#search-container {
+    text-align: center; /* Centrera textinnehållet */
+    margin: 20px; /* Lägg till lite marginal */
+}
+
+#search {
+    margin-top: 10px; /* Lägg till lite utrymme ovanför sökfältet */
+}
+#team-container {
+    text-align: center; /* Centrera textinnehållet i teamcontainern */
+    margin: 20px; /* Lägg till lite marginal */
+}
