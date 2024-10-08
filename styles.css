@@ -2,13 +2,28 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #e9f1f5;
 }
 
 header {
     background-color: #05183e;
     color: #fffb27;
     text-align: center;
-    padding: 10px;
+    padding: 20px;
+}
+
+nav button {
+    background-color: #fffb27;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+nav button:hover {
+    background-color: #f3c500;
 }
 
 #app {
@@ -16,72 +31,81 @@ header {
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #fffb27;
+    border-radius: 10px;
+    background-color: #fff;
 }
-/* Add to styles.css */
-/* Style for team and reserves */
+
 ul {
     list-style-type: none;
     padding: 0;
 }
 
 ul li {
-    background-color: #f2f2f2;
-    margin: 5px;
+    display: flex;
+    align-items: center;
+    background-color: #62a4ff;
+    margin: 5px 0;
     padding: 10px;
     border-radius: 5px;
 }
 
 h2 {
     color: #05183e;
-}
-/* Add to styles.css */
-
-
-ul li {
-    display: flex;
-    align-items: center;
-    background-color: #62a4ff;
-    margin: 5px;
-    padding: 10px;
-    border-radius: 5px;
+    text-align: center;
 }
 
-
-
-ul li img {
+.pokemon-list img, .team-list img, .reserve-list img {
     margin-right: 10px;
-    width: 50px; /* Adjust the size as needed */
-    height: 50px; /* Adjust the size as needed */
+    width: 50px;
+    height: 50px;
 }
 
-span {
-    font-size: 18px;
-}
-#search-results li {
-    display: flex;
-    align-items: center;
-    background-color: #f4f4f4;
-    margin: 5px;
-    padding: 10px;
+.add-button,
+.remove-button {
+    background-color: #fffb27;
+    border: none;
     border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s;
+    font-weight: bold;
+    margin-left: 10px;
 }
-#list-container {
-    max-width: 800px;
-    width: 100%;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
+
+.add-button:hover,
+.remove-button:hover {
+    background-color: #f3c500;
 }
+
+.add-button:active,
+.remove-button:active {
+    background-color: #e6b800;
+    transform: scale(0.95);
+}
+
 #search-container {
-    text-align: center; /* Centrera textinnehållet */
-    margin: 20px; /* Lägg till lite marginal */
+    text-align: center;
+    margin: 20px;
 }
 
 #search {
-    margin-top: 10px; /* Lägg till lite utrymme ovanför sökfältet */
+    padding: 10px;
+    width: 80%;
+    max-width: 400px;
+    margin: 10px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
+
 #team-container {
-    text-align: center; /* Centrera textinnehållet i teamcontainern */
-    margin: 20px; /* Lägg till lite marginal */
+    text-align: center;
+    margin: 20px;
+}
+
+#team-container h2 {
+    text-align: center;
+}
+
+.reserve-list {
+    margin-top: 20px;
 }

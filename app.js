@@ -1,23 +1,25 @@
+import { changePokemonName } from './changepokename.js';
+
 const team = [];
+const reserves = [];
 let allPokemonData = [];
 
 document.addEventListener('DOMContentLoaded', function () {
-    window.showSearchView = function () {
-        document.getElementById('search-container').style.display = 'block';
-        document.getElementById('team-container').style.display = 'none';
-    };
+    document.getElementById('start-page').addEventListener('click', function (e) {
+        e.preventDefault();
+        showSearchView();
+    });
 
-    window.showTeamView = function () {
-        document.getElementById('search-container').style.display = 'none';
-        document.getElementById('team-container').style.display = 'block';
-        renderTeam(); // Rendera teamet när vyn visas
-    };
+    document.getElementById('team-lineup').addEventListener('click', function (e) {
+        e.preventDefault();
+        showTeamView();
+    });
 
     async function fetchPokemonData() {
         try {
             const response = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=100');
             const data = await response.json();
-            allPokemonData = data.results; // Spara all Pokémon data för att kunna söka
+            allPokemonData = data.results;
             renderPokemonList(allPokemonData);
         } catch (error) {
             console.error('Error fetching Pokémon data:', error);
@@ -36,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function renderPokemonList(pokemonList) {
         const ul = document.querySelector('.pokemon-list');
-        ul.innerHTML = ''; // Rensa listan innan rendering
+        ul.innerHTML = '';
 
         for (const pokemon of pokemonList) {
             const imageUrl = await fetchPokemonImage(pokemon.url);
@@ -48,78 +50,113 @@ document.addEventListener('DOMContentLoaded', function () {
             li.appendChild(img);
             li.appendChild(document.createTextNode(pokemon.name));
 
-            // Plus-ikon för att lägga till Pokémon
+            const nicknameInput = document.createElement('input');
+            nicknameInput.type = 'text';
+            nicknameInput.placeholder = 'Enter nickname';
+            nicknameInput.className = 'nickname-input';
+            nicknameInput.id = `nickname-${pokemon.name}`;
+
             const addButton = document.createElement('span');
             addButton.textContent = ' + ';
-            addButton.style.cursor = 'pointer';
-            addButton.style.marginLeft = '10px'; // Lägg till marginal
+            addButton.className = 'add-button';
             addButton.addEventListener('click', function (e) {
-                e.stopPropagation(); // Stoppa bubbla för att inte trigga li-klick
-                addToTeam(pokemon);
+                e.stopPropagation();
+                const nickname = nicknameInput.value.trim();
+                addToTeam({ ...pokemon, imageUrl, nickname: nickname || pokemon.name });
             });
 
+            li.appendChild(nicknameInput);
             li.appendChild(addButton);
             ul.appendChild(li);
         }
     }
 
-    function renderFilteredPokemonList(filter) {
-        const filteredList = allPokemonData.filter(pokemon => pokemon.name.toLowerCase().includes(filter.toLowerCase()));
-        renderPokemonList(filteredList);
+    function showSearchView() {
+        document.getElementById('search-container').style.display = 'block';
+        document.getElementById('team-container').style.display = 'none';
+    }
+
+    function showTeamView() {
+        document.getElementById('search-container').style.display = 'none';
+        document.getElementById('team-container').style.display = 'block';
+        renderTeam();
     }
 
     async function addToTeam(pokemon) {
-        if (!team.some(t => t.name === pokemon.name)) {
-            const imageUrl = await fetchPokemonImage(pokemon.url); // Hämta bild här
-            team.push({ ...pokemon, imageUrl }); // Spara också bild-URL
-            console.log("Team:", team);
-            renderTeam();
+        if (team.length < 3) {
+            team.push(pokemon);
+        } else if (!reserves.some(r => r.name === pokemon.name)) {
+            reserves.push(pokemon);
         }
-    }
-
-    function removeFromTeam(pokemon) {
-        const index = team.findIndex(t => t.name === pokemon.name);
-        if (index > -1) {
-            team.splice(index, 1);
-            console.log("Team after removal:", team);
-            renderTeam();
-        }
+        renderTeam();
     }
 
     function renderTeam() {
         const teamContainer = document.querySelector('.team-list');
-        teamContainer.innerHTML = ''; // Rensa team listan
+        teamContainer.innerHTML = '';
 
         team.forEach(pokemon => {
             const li = document.createElement('li');
             const img = document.createElement('img');
-            img.src = pokemon.imageUrl; // Använd bild-URL
+            img.src = pokemon.imageUrl;
             img.alt = pokemon.name;
-            img.style.width = '50px'; // Sätt en storlek för bilderna
-            img.style.marginRight = '10px'; // Marginal mellan bild och namn
 
             li.appendChild(img);
-            li.appendChild(document.createTextNode(pokemon.name));
+            li.appendChild(document.createTextNode(pokemon.nickname));
 
-            // Minus-ikon för att ta bort Pokémon
+            const changeNameButton = document.createElement('span');
+            changeNameButton.textContent = ' ✏️ ';
+            changeNameButton.className = 'change-name-button';
+            changeNameButton.addEventListener('click', () => {
+                changePokemonName(pokemon, (updatedPokemon) => {
+                    renderTeam();
+                });
+            });
+
             const removeButton = document.createElement('span');
             removeButton.textContent = ' − ';
-            removeButton.style.cursor = 'pointer';
-            removeButton.style.marginLeft = '10px'; // Lägg till marginal
+            removeButton.className = 'remove-button';
             removeButton.addEventListener('click', function (e) {
-                e.stopPropagation(); // Stoppa bubbla för att inte trigga li-klick
+                e.stopPropagation();
                 removeFromTeam(pokemon);
             });
 
+            li.appendChild(changeNameButton);
             li.appendChild(removeButton);
             teamContainer.appendChild(li);
+        });
+
+        // Rendera reserver
+        const reserveContainer = document.querySelector('.reserve-list');
+        reserveContainer.innerHTML = '';
+        reserves.forEach(pokemon => {
+            const li = document.createElement('li');
+            const img = document.createElement('img');
+            img.src = pokemon.imageUrl;
+            img.alt = pokemon.name;
+
+            li.appendChild(img);
+            li.appendChild(document.createTextNode(pokemon.nickname));
+
+            const removeButton = document.createElement('span');
+            removeButton.textContent = ' − ';
+            removeButton.className = 'remove-button';
+            removeButton.addEventListener('click', function (e) {
+                e.stopPropagation();
+                removeFromReserves(pokemon);
+            });
+
+            li.appendChild(removeButton);
+            reserveContainer.appendChild(li);
         });
     }
 
     document.getElementById('search').addEventListener('input', function () {
-        renderFilteredPokemonList(this.value);
+        const filter = this.value.toLowerCase();
+        const filteredList = allPokemonData.filter(pokemon => pokemon.name.toLowerCase().includes(filter));
+        renderPokemonList(filteredList);
     });
 
-    // Initial setup - Fetch Pokémon data and render list
+    // Initial setup
     fetchPokemonData();
 });
