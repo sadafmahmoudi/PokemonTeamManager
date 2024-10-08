@@ -2,7 +2,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e9f1f5;
+    background-color: #d42828; 
 }
 
 header {
@@ -26,15 +26,6 @@ nav button:hover {
     background-color: #f3c500;
 }
 
-#app {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #fffb27;
-    border-radius: 10px;
-    background-color: #fff;
-}
-
 ul {
     list-style-type: none;
     padding: 0;
@@ -56,12 +47,20 @@ h2 {
 
 .pokemon-list img, .team-list img, .reserve-list img {
     margin-right: 10px;
-    width: 50px;
-    height: 50px;
+    width: 60px; /* Större bildstorlek */
+    height: 60px; /* Större bildstorlek */
+}
+
+.nickname-input {
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .add-button,
-.remove-button {
+.remove-button,
+.apply-button {
     background-color: #fffb27;
     border: none;
     border-radius: 5px;
@@ -73,12 +72,14 @@ h2 {
 }
 
 .add-button:hover,
-.remove-button:hover {
+.remove-button:hover,
+.apply-button:hover {
     background-color: #f3c500;
 }
 
 .add-button:active,
-.remove-button:active {
+.remove-button:active,
+.apply-button:active {
     background-color: #e6b800;
     transform: scale(0.95);
 }
@@ -98,6 +99,8 @@ h2 {
 }
 
 #team-container {
+    display: flex;
+    justify-content: space-between;
     text-align: center;
     margin: 20px;
 }
@@ -108,4 +111,53 @@ h2 {
 
 .reserve-list {
     margin-top: 20px;
+}
+ul li {
+    display: flex;
+    align-items: center;
+    background-color: #62a4ff;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    justify-content: space-between; 
+}
+
+.nickname-input {
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    flex: 1; 
+    min-width: 100px; 
+}
+
+.add-button,
+.apply-button {
+    margin-left: 5px;
+    flex-shrink: 0;
+}
+ul li {
+    display: flex;
+    align-items: center;
+    background-color: #62a4ff;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    justify-content: flex-start; 
+}
+
+.nickname-input {
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    flex: 1; 
+    max-width: 150px; 
+    min-width: 100px; 
+}
+
+.add-button,
+.apply-button {
+    margin-left: 5px;
+    flex-shrink: 0; 
 }
