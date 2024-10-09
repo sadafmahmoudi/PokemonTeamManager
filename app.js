@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', function () {
     window.showTeamView = function () {
         document.getElementById('search-container').style.display = 'none';
         document.getElementById('team-container').style.display = 'block';
-        renderTeam(); // Rendera teamet när vyn visas
+        renderTeam(); 
     };
 
     async function fetchPokemonData() {
         try {
             const response = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=100');
             const data = await response.json();
-            allPokemonData = data.results; // Spara all Pokémon data för att kunna söka
+            allPokemonData = data.results; 
             renderPokemonList(allPokemonData);
         } catch (error) {
             console.error('Error fetching Pokémon data:', error);
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function renderPokemonList(pokemonList) {
         const ul = document.querySelector('.pokemon-list');
-        ul.innerHTML = ''; // Rensa listan innan rendering
+        ul.innerHTML = ''; 
 
         for (const pokemon of pokemonList) {
             const imageUrl = await fetchPokemonImage(pokemon.url);
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pokemon.name.toLowerCase().includes(filter.toLowerCase())
         );
 
-        // Sortera så att matchningar visas först
+        
         const sortedList = filteredList.sort((a, b) => {
             const aName = a.name.toLowerCase();
             const bName = b.name.toLowerCase();
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return 0;
         });
 
-        // Om sökfältet är tomt, visa hela listan
+        
         if (filter === '') {
             renderPokemonList(allPokemonData);
         } else {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderTeam() {
         const teamContainer = document.querySelector('.team-list');
-        teamContainer.innerHTML = ''; // Rensa team listan
+        teamContainer.innerHTML = ''; 
 
         team.forEach(pokemon => {
             const li = document.createElement('li');
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
             img.alt = pokemon.name;
 
             li.appendChild(img);
-            li.appendChild(document.createTextNode(pokemon.nickname)); // Använd smeknamn
+            li.appendChild(document.createTextNode(pokemon.nickname)); 
 
             const removeButton = document.createElement('span');
             removeButton.textContent = ' − ';
@@ -159,9 +159,9 @@ document.addEventListener('DOMContentLoaded', function () {
             teamContainer.appendChild(li);
         });
 
-        // Rendera reserver om det finns några
+        
         const reserveContainer = document.querySelector('.reserve-list');
-        reserveContainer.innerHTML = ''; // Rensa reservlistan
+        reserveContainer.innerHTML = ''; 
 
         reserves.forEach(pokemon => {
             const li = document.createElement('li');
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
             img.alt = pokemon.name;
 
             li.appendChild(img);
-            li.appendChild(document.createTextNode(pokemon.nickname)); // Använd smeknamn
+            li.appendChild(document.createTextNode(pokemon.nickname)); 
 
             const removeButton = document.createElement('span');
             removeButton.textContent = ' − ';
@@ -193,3 +193,19 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchPokemonData();
 });
 
+async function fetchPokemonImage(url) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.sprites && data.sprites.front_default) {
+            return data.sprites.front_default;
+        } else {
+            console.warn(`No image found for URL: ${url}`);
+            return 'path/to/default/image.png'; // Lägga till en default bild om ingen finns
+        }
+    } catch (error) {
+        console.error('Error fetching Pokémon image:', error);
+        return 'path/to/default/image.png'; // Lägga till en default bild om fetch misslyckas
+    }
+}
